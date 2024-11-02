@@ -9,8 +9,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-
-
 Map mapResponse = {};
 Map dataResponse = {};
 List listResponse = [];
@@ -49,9 +47,8 @@ class _QuranCloudScrState extends State<QuranCloudScr> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-           centerTitle: true,
+          centerTitle: true,
           title: Text("Mushaf Cloud ☁️ | مصحف کلاؤڈ",
-        
               style: const TextStyle(fontFamily: 'alq', color: Colors.white)),
           backgroundColor: Color(0xff023E73),
         ),
@@ -325,7 +322,7 @@ class _QuranCloudState extends State<QuranCloud> {
   //     print("Error playing audio: $e");
   //   }
   // }
-   Future<void> downloadAudio(String audioUrl, String filename) async {
+  Future<void> downloadAudio(String audioUrl, String filename) async {
     try {
       // Get the application's documents directory
       Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -411,9 +408,195 @@ class _QuranCloudState extends State<QuranCloud> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Color(0xffececec), // Set the color of the drawer icon
+          ),
           title: Text("Surah ${widget.name.namee}",
               style: const TextStyle(fontFamily: 'alq', color: Colors.white)),
           backgroundColor: Color(0xff023E73),
+        ),
+        drawer: Drawer(
+          child: Container(
+            color: Color(0xff023E73), // Set the background color of the drawer
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color:
+                        Color(0xff023E73), // Background color for DrawerHeader
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Mushaf Cloud ☁️ \n Engine",
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            Color(0xffececec), // Light grey color for the text
+                        fontFamily: "jameel",
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    elevation: 4,
+                    color:
+                        Color(0xffececec), // Light grey background for the card
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: Container(
+                        width: double.infinity, // Full width within the card
+                        child: DropdownButton<String>(
+                          icon: Icon(Icons.arrow_drop_down_circle,
+                              size: 20, color: Color(0xff023E73)),
+                          isExpanded:
+                              true, // Makes the dropdown take up full width
+                          value: selectedLanguage,
+                          hint: Text(
+                            "Select Language",
+                            style: TextStyle(
+                              fontFamily: "jameel",
+                              color:
+                                  Color(0xff023E73), // Text in deep blue color
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          items: languagesList.isNotEmpty
+                              ? languagesList.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  String languageCode = entry.value;
+
+                                  return DropdownMenuItem<String>(
+                                    value: languageCode,
+                                    child: Center(
+                                      child: Text(
+                                        languages[index],
+                                        style: TextStyle(
+                                          fontFamily: "jameel",
+                                          color: Color(0xff023E73),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList()
+                              : null,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedLanguage = value;
+                              if (selectedLanguage != null) {
+                                languageapi(selectedLanguage!);
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                 ),
+                // Divider(
+                //   thickness: 1,
+                //   color: Color(0xffececec), // Light grey divider color
+                //   indent: 16,
+                //   endIndent: 16,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    elevation: 4,
+                    color:
+                        Color(0xffececec), // Light grey background for the card
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: Container(
+                        width: double.infinity, // Full width within the card
+                        child: DropdownButton<String>(
+                          icon: Icon(Icons.arrow_drop_down_circle,
+                              size: 20, color: Color(0xff023E73)),
+                          isExpanded:
+                              true, // Makes the dropdown take up full width
+                          value: selectedLanaguageData,
+                          hint: Text(
+                            "Select Identifier",
+                            style: TextStyle(
+                              fontFamily: "jameel",
+                              color:
+                                  Color(0xff023E73), // Text in deep blue color
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          items: iList.isNotEmpty
+                              ? iList.asMap().entries.map((entry) {
+                                  return DropdownMenuItem<String>(
+                                    value: entry.value["identifier"],
+                                    child: Center(
+                                      child: Text(
+                                        entry.value["name"],
+                                        style: TextStyle(
+                                          fontFamily: "jameel",
+                                          color: Color(0xff023E73),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList()
+                              : null,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedLanaguageData = value;
+                              if (selectedLanaguageData != null) {
+                                identifierApi(selectedLanaguageData);
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                
+                Divider(
+                  thickness: 1,
+                  color: Color(0xffececec), // Light grey divider color
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            elevation: 4,
+                            color: Color(
+                                0xffececec), // Light grey background for the card
+                            child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 8.0),
+                                child: Container(
+                                    width: double.infinity,
+                                    child: Center(
+                                        child: Text("GO",
+                                            style: TextStyle(
+                                              fontFamily: "jameel",
+                                              color: Color(0xff023E73),
+                                            ))))))))
+              ],
+            ),
+          ),
         ),
         body: Column(
           children: [
@@ -468,109 +651,109 @@ class _QuranCloudState extends State<QuranCloud> {
                     )),
               ),
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButton<String>(
-                  icon: const Icon(
-                    Icons.arrow_drop_down_circle,
-                    size: 16,
-                  ),
-                  isDense: true,
-                  value: selectedLanguage,
-                  hint: Center(
-                    child: const Text(
-                      "Select Language",
-                      style: TextStyle(
-                          fontFamily: "jameel", color: Color(0XFF023E73)),
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                    ),
-                  ), // Hint for the dropdown
-                  items: languagesList.isNotEmpty
-                      ? languagesList.asMap().entries.map((entry) {
-                          int index =
-                              entry.key; // Get the index of the language
-                          String languageCode =
-                              entry.value; // Get the language code from the API
+            // Card(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: DropdownButton<String>(
+            //       icon: const Icon(
+            //         Icons.arrow_drop_down_circle,
+            //         size: 16,
+            //       ),
+            //       isDense: true,
+            //       value: selectedLanguage,
+            //       hint: Center(
+            //         child: const Text(
+            //           "Select Language",
+            //           style: TextStyle(
+            //               fontFamily: "jameel", color: Color(0XFF023E73)),
+            //           textDirection: TextDirection.rtl,
+            //           textAlign: TextAlign.center,
+            //         ),
+            //       ), // Hint for the dropdown
+            //       items: languagesList.isNotEmpty
+            //           ? languagesList.asMap().entries.map((entry) {
+            //               int index =
+            //                   entry.key; // Get the index of the language
+            //               String languageCode =
+            //                   entry.value; // Get the language code from the API
 
-                          return DropdownMenuItem<String>(
-                            value:
-                                languageCode, // Use the language code as the value
-                            child: Center(
-                              child: Text(
-                                languages[index],
-                                style: TextStyle(
-                                    fontFamily: "jameel",
-                                    color: Color(0XFF023E73)),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.center,
-                              ),
-                            ), // Display the corresponding language name by index
-                          );
-                        }).toList()
-                      : null, // Set items to null if languagesList is empty
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLanguage = value; // Update the selected language
-                      if (selectedLanguage != null) {
-                        languageapi(
-                            selectedLanguage!); // Fetch details for the selected language
-                      }
-                    });
-                  },
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: DropdownButton<String>(
-                  icon: const Icon(
-                    Icons.arrow_drop_down_circle,
-                    size: 16,
-                  ),
-                  isDense: true,
-                  value: selectedLanaguageData,
-                  hint: Center(
-                    child: const Text(
-                      "Select Identifier",
-                      style: TextStyle(
-                          fontFamily: "jameel", color: Color(0XFF023E73)),
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.center,
-                    ),
-                  ), // Hint for the dropdown
-                  items: iList.isNotEmpty
-                      ? iList.asMap().entries.map((entry) {
-                          return DropdownMenuItem<String>(
-                            value: entry.value[
-                                "identifier"], // Use the language code as the value
-                            child: Center(
-                              child: Text(
-                                entry.value["name"],
-                                style: TextStyle(
-                                    fontFamily: "jameel",
-                                    color: Color(0XFF023E73)),
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.center,
-                              ),
-                            ), // Display the corresponding language name
-                          );
-                        }).toList()
-                      : null, // Set items to null if iList is empty
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLanaguageData = value;
-                      // Update the selected identifier
-                      if (selectedLanaguageData != null) {
-                        identifierApi(selectedLanaguageData);
-                      }
-                    });
-                  },
-                ),
-              ),
-            ),
+            //               return DropdownMenuItem<String>(
+            //                 value:
+            //                     languageCode, // Use the language code as the value
+            //                 child: Center(
+            //                   child: Text(
+            //                     languages[index],
+            //                     style: TextStyle(
+            //                         fontFamily: "jameel",
+            //                         color: Color(0XFF023E73)),
+            //                     textDirection: TextDirection.rtl,
+            //                     textAlign: TextAlign.center,
+            //                   ),
+            //                 ), // Display the corresponding language name by index
+            //               );
+            //             }).toList()
+            //           : null, // Set items to null if languagesList is empty
+            //       onChanged: (value) {
+            //         setState(() {
+            //           selectedLanguage = value; // Update the selected language
+            //           if (selectedLanguage != null) {
+            //             languageapi(
+            //                 selectedLanguage!); // Fetch details for the selected language
+            //           }
+            //         });
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Card(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: DropdownButton<String>(
+            //       icon: const Icon(
+            //         Icons.arrow_drop_down_circle,
+            //         size: 16,
+            //       ),
+            //       isDense: true,
+            //       value: selectedLanaguageData,
+            //       hint: Center(
+            //         child: const Text(
+            //           "Select Identifier",
+            //           style: TextStyle(
+            //               fontFamily: "jameel", color: Color(0XFF023E73)),
+            //           textDirection: TextDirection.rtl,
+            //           textAlign: TextAlign.center,
+            //         ),
+            //       ), // Hint for the dropdown
+            //       items: iList.isNotEmpty
+            //           ? iList.asMap().entries.map((entry) {
+            //               return DropdownMenuItem<String>(
+            //                 value: entry.value[
+            //                     "identifier"], // Use the language code as the value
+            //                 child: Center(
+            //                   child: Text(
+            //                     entry.value["name"],
+            //                     style: TextStyle(
+            //                         fontFamily: "jameel",
+            //                         color: Color(0XFF023E73)),
+            //                     textDirection: TextDirection.rtl,
+            //                     textAlign: TextAlign.center,
+            //                   ),
+            //                 ), // Display the corresponding language name
+            //               );
+            //             }).toList()
+            //           : null, // Set items to null if iList is empty
+            //       onChanged: (value) {
+            //         setState(() {
+            //           selectedLanaguageData = value;
+            //           // Update the selected identifier
+            //           if (selectedLanaguageData != null) {
+            //             identifierApi(selectedLanaguageData);
+            //           }
+            //         });
+            //       },
+            //     ),
+            //   ),
+            // ),
             listResponse.isNotEmpty
                 ? Expanded(
                     child: ListView.builder(
@@ -595,150 +778,145 @@ class _QuranCloudState extends State<QuranCloud> {
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
                               color: currentlyPlayingIndex == index
-                                  ? Colors.indigo
+                                  ? Color(0XFF023E73)
                                   : Colors
                                       .transparent, // Highlight playing Ayah
                               width: 2.0,
                             ),
                           ),
                           color: currentlyPlayingIndex == index
-                              ? Colors.blue.shade50
+                              ? Color(0xffececec)
                               : Colors.white,
                           child: ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Center(
-                                  child: Text(
-                                    listResponse[index]['text'],
-                                    textDirection: TextDirection.rtl,
-                                    textAlign: TextAlign.right,
-                                    style: GoogleFonts.amiriQuran(
-                                        color: Colors.black),
-                                  ),
+                            title: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Center(
+                                child: Text(
+                                  listResponse[index]['text'],
+                                  textDirection: TextDirection.rtl,
+                                  textAlign: TextAlign.right,
+                                  style: GoogleFonts.amiriQuran(
+                                      color: Colors.black),
                                 ),
                               ),
-                              subtitle: Column(
-                                children: [
-                                  if (audioUrl == null)
-                                    Center(
-                                        child: Text(
-                                      ayahText,
-                                      style: TextStyle(
-                                          fontFamily: "jameel",
-                                          fontSize: 20,
-                                          color: Color(0XFF023E73)),
-                                               textDirection: TextDirection.rtl,
+                            ),
+                            subtitle: Column(
+                              children: [
+                                if (audioUrl == null)
+                                  Center(
+                                      child: Text(
+                                    ayahText,
+                                    style: TextStyle(
+                                        fontFamily: "jameel",
+                                        fontSize: 20,
+                                        color: Color(0XFF023E73)),
+                                    textDirection: TextDirection.rtl,
                                     // textAlign: TextAlign.right,
-                                      textAlign: TextAlign.center,
-                                    ))
-                                  else
-                                    // Padding(
-                                    //   padding: const EdgeInsets.all(16.0),
-                                    //   child: Card(
-                                    //     elevation: 6,
-                                    //     shadowColor: Colors.indigo[900],
-                                    //     child: Center(
-                                    //       child: IconButton(
-                                    //         icon: Icon(
-                                    //           currentlyPlayingIndex == index &&
-                                    //                   isPlaying
-                                    //               ? Icons.pause_circle_rounded
-                                    //               : Icons
-                                    //                   .play_circle_fill_rounded,
-                                    //           color: Colors.indigo[900],
-                                    //         ),
-                                    //         onPressed: () {
-                                    //           togglePlayPause(audioUrl, index);
-                                    //         },
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                    textAlign: TextAlign.center,
+                                  ))
+                                else
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(16.0),
+                                  //   child: Card(
+                                  //     elevation: 6,
+                                  //     shadowColor: Colors.indigo[900],
+                                  //     child: Center(
+                                  //       child: IconButton(
+                                  //         icon: Icon(
+                                  //           currentlyPlayingIndex == index &&
+                                  //                   isPlaying
+                                  //               ? Icons.pause_circle_rounded
+                                  //               : Icons
+                                  //                   .play_circle_fill_rounded,
+                                  //           color: Colors.indigo[900],
+                                  //         ),
+                                  //         onPressed: () {
+                                  //           togglePlayPause(audioUrl, index);
+                                  //         },
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
 
-                                    Card(
-                                      color: Colors.indigo[900],
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.skip_previous,
-                                              color: Colors.white,
-                                              size:
-                                                  36, // Increase this value to make the icon larger
-                                            ),
-                                            onPressed: index > 0
-                                                ? () => togglePlayPause(
-                                                    listresp[index - 1]
-                                                        ['audio'],
-                                                    index - 1)
-                                                : null,
+                                  Card(
+                                    color: Color(0XFF023E73),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.skip_previous,
+                                            color: Colors.white,
+                                            size:
+                                                36, // Increase this value to make the icon larger
                                           ),
-                                          IconButton(
-                                            icon: Icon(
-                                              isPlaying &&
-                                                      currentlyPlayingIndex ==
-                                                          index
-                                                  ? Icons.pause
-                                                  : Icons.play_arrow,
-                                              color: Colors.white,
-                                              size:
-                                                  36, // Increase this value to make the icon larger
-                                            ),
-                                            onPressed: () {
-                                              if (audioUrl != null) {
-                                                togglePlayPause(
-                                                    audioUrl, index);
-                                              }
-                                            },
+                                          onPressed: index > 0
+                                              ? () => togglePlayPause(
+                                                  listresp[index - 1]['audio'],
+                                                  index - 1)
+                                              : null,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            isPlaying &&
+                                                    currentlyPlayingIndex ==
+                                                        index
+                                                ? Icons.pause
+                                                : Icons.play_arrow,
+                                            color: Colors.white,
+                                            size:
+                                                36, // Increase this value to make the icon larger
                                           ),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.skip_next,
-                                              color: Colors.white,
-                                              size:
-                                                  36, // Increase this value to make the icon larger
-                                            ),
-                                            onPressed:
-                                                index < listResponse.length - 1
-                                                    ? () => togglePlayPause(
-                                                        listresp[index + 1]
-                                                            ['audio'],
-                                                        index + 1)
-                                                    : null,
+                                          onPressed: () {
+                                            if (audioUrl != null) {
+                                              togglePlayPause(audioUrl, index);
+                                            }
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.skip_next,
+                                            color: Colors.white,
+                                            size:
+                                                36, // Increase this value to make the icon larger
                                           ),
+                                          onPressed: index <
+                                                  listResponse.length - 1
+                                              ? () => togglePlayPause(
+                                                  listresp[index + 1]['audio'],
+                                                  index + 1)
+                                              : null,
+                                        ),
 
-                                          // button in dialog
-                                          // IconButton(
-                                          //   icon: Icon(Icons.download),
-                                          //   onPressed: () {
-                                          //     if (audioUrl != null) {
-                                          //       downloadAudio(audioUrl,
-                                          //           "Surah ${widget.name.namee} | ayah_${index + 1}.mp3"); // Download the audio
-                                          //     }
-                                          //   },
-                                          // ),
-                                        ],
-                                      ),
+                                        // button in dialog
+                                        // IconButton(
+                                        //   icon: Icon(Icons.download),
+                                        //   onPressed: () {
+                                        //     if (audioUrl != null) {
+                                        //       downloadAudio(audioUrl,
+                                        //           "Surah ${widget.name.namee} | ayah_${index + 1}.mp3"); // Download the audio
+                                        //     }
+                                        //   },
+                                        // ),
+                                      ],
                                     ),
-                                ],
-                              ),
+                                  ),
+                              ],
+                            ),
                             onTap: () {
-                              
-                            
-                                  // Show the action dialog when tapping on the ListTile
-                                  showActionDialog(
-                                    listResponse[index]['text'].toString(),
-                                    ayahText.isNotEmpty
-                                        ? ayahText
-                                        : 'No text available', // Ensure ayahText is not null
-                                    audioUrl ??
-                                        '', // Provide an empty string if audioUrl is null
-                                    index + 1,
-                                  );
-                                },
-                              ),
+                              // Show the action dialog when tapping on the ListTile
+                              showActionDialog(
+                                listResponse[index]['text'].toString(),
+                                ayahText.isNotEmpty
+                                    ? ayahText
+                                    : 'No text available', // Ensure ayahText is not null
+                                audioUrl ??
+                                    '', // Provide an empty string if audioUrl is null
+                                index + 1,
+                              );
+                            },
+                          ),
                         );
                       },
                       itemCount: listResponse.length,
@@ -751,6 +929,7 @@ class _QuranCloudState extends State<QuranCloud> {
         ));
   }
 }
+
 class Surahindex {
   final int numm;
   final int nummv;
