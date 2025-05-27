@@ -109,7 +109,7 @@ class _QuranCloudScrState extends State<QuranCloudScr> {
                 itemCount: listResponse == null ? 0 : listResponse.length,
               )
             : Center(
-                child: RefreshProgressIndicator(),
+                child: LinearProgressIndicator(),
               ));
   }
 }
