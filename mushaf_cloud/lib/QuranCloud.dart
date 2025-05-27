@@ -9,10 +9,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-Map mapResponse = {};
-Map dataResponse = {};
-List listResponse = [];
-
 class QuranCloudScr extends StatefulWidget {
   const QuranCloudScr({Key? key}) : super(key: key);
 
@@ -21,16 +17,19 @@ class QuranCloudScr extends StatefulWidget {
 }
 
 class _QuranCloudScrState extends State<QuranCloudScr> {
+  Map mapResponse = {};
+  Map dataResponse = {};
+  List listResponse = [];
   Future apicall() async {
     http.Response response;
 
-    response = await http.get(Uri.parse("http://api.alquran.cloud/v1/meta"));
+    response = await http.get(Uri.parse("https://api.alquran.cloud/v1/surah/"));
     if (response.statusCode == 200) {
       setState(() {
         // stringresponse = response.body;
         mapResponse = jsonDecode(response.body);
-        dataResponse = mapResponse['data']['surahs'];
-        listResponse = dataResponse['references'];
+        // dataResponse = mapResponse['data']['surahs'];
+        listResponse = mapResponse['data'];
         print("SMAS=>$listResponse");
       });
     }
@@ -136,48 +135,47 @@ class _QuranCloudState extends State<QuranCloud> {
   String? selectedLanaguageData; // Stores the selected language identifier
   // List of language names
   final List<String> languages = [
-   "Arabic",
-  "Amharic",
-  "Azerbaijani",
-  "Berber",
-  "Bengali",
-  "Czech",
-  "Chechen",
-  "German",
-  "Dhivehi",
-  "English",
-  "Spanish",
-  "Persian",
-  "French",
-  "Hausa",
-  "Hindi",
-  "Indonesian",
-  "Italian",
-  "Japanese",
-  "Korean",
-  "Kurdish",
-  "Malayalam",
-  "Dutch",
-  "Norwegian",
-  "Polish",
-  "Pashto",
-  "Portuguese",
-  "Romanian",
-  "Russian",
-  "Sindhi",
-  "Somali",
-  "Albanian",
-  "Swedish",
-  "Swahili",
-  "Tamil",
-  "Tajik",
-  "Thai",
-  "Turkish",
-  "Tatar",
-  "Uyghur",
-  "Urdu",
-  "Uzbek"
-
+    "Arabic",
+    "Amharic",
+    "Azerbaijani",
+    "Berber",
+    "Bengali",
+    "Czech",
+    "Chechen",
+    "German",
+    "Dhivehi",
+    "English",
+    "Spanish",
+    "Persian",
+    "French",
+    "Hausa",
+    "Hindi",
+    "Indonesian",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Kurdish",
+    "Malayalam",
+    "Dutch",
+    "Norwegian",
+    "Polish",
+    "Pashto",
+    "Portuguese",
+    "Romanian",
+    "Russian",
+    "Sindhi",
+    "Somali",
+    "Albanian",
+    "Swedish",
+    "Swahili",
+    "Tamil",
+    "Tajik",
+    "Thai",
+    "Turkish",
+    "Tatar",
+    "Uyghur",
+    "Urdu",
+    "Uzbek"
   ];
 
 // to get surah
@@ -502,7 +500,7 @@ class _QuranCloudState extends State<QuranCloud> {
                       ),
                     ),
                   ),
-                 ),
+                ),
                 // Divider(
                 //   thickness: 1,
                 //   color: Color(0xffececec), // Light grey divider color
@@ -567,7 +565,7 @@ class _QuranCloudState extends State<QuranCloud> {
                     ),
                   ),
                 ),
-                
+
                 Divider(
                   thickness: 1,
                   color: Color(0xffececec), // Light grey divider color
