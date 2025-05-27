@@ -23,7 +23,7 @@ class _QuranCloudScrState extends State<QuranCloudScr> {
   Future apicall() async {
     http.Response response;
 
-    response = await http.get(Uri.parse("https://api.alquran.cloud/v1/surah/"));
+    response = await http.get(Uri.parse("https://api.alquran.cloud/v1/surah"));
     if (response.statusCode == 200) {
       setState(() {
         // stringresponse = response.body;
@@ -109,7 +109,7 @@ class _QuranCloudScrState extends State<QuranCloudScr> {
                 itemCount: listResponse == null ? 0 : listResponse.length,
               )
             : Center(
-                child: LinearProgressIndicator(),
+                child: CircularProgressIndicator(),
               ));
   }
 }
